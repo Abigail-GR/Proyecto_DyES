@@ -4,7 +4,7 @@
  */
 package partyfees2;
 
-import Vista.Login;
+import Vista.Sistema;
 
 /**
  *
@@ -16,8 +16,8 @@ public class PartyFees2 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Login lg = new Login();
-        lg.setVisible(true);
+        Sistema st = new Sistema();
+        st.setVisible(true);
     }
     
 }
