@@ -13,16 +13,17 @@ import java.sql.SQLException;
  * @author dmesc
  */
 public class Conexion {
-    Connection con;
-    public Connection Conectar(){
+    private static final String URL = "jdbc:mysql://localhost:3306/partyfees_bd?serverTimezone=UTC";
+    private static final String USER = "root";
+    private static final String PASSWORD = "";
+    
+    public static Connection Conectar(){
+        Connection con = null;
         try {
-            String myBD = "jdbc:mysql://localhost:3306/partyfees_bd?serverTimezone=UTC";
-            con = DriverManager.getConnection(myBD, "root", "");
-            return con;
+            con = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println("Error al conectar a la base de datos: " + e.getMessage());
         }
-        
-        return null;
+        return con;
     }
 }
