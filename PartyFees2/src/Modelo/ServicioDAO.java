@@ -175,4 +175,26 @@ public class ServicioDAO {
         }
         return id;
     }
+    
+    public List ListarServicios(){
+        List<Servicio> ListaServicios = new ArrayList();
+        String sql = "SELECT * FROM serviciosinfo";
+        try {
+            con = cn.Conectar();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Servicio ser = new Servicio();
+                ser.setIdreserva(rs.getInt("id"));
+                ser.setNombre(rs.getString("servicio"));
+                ser.setDescripcion(rs.getString("descripcion"));
+                ser.setCosto(rs.getDouble("costo"));
+                ser.setPrecio(rs.getDouble("precio"));
+                ListaServicios.add(ser);       
+            }
+        } catch (SQLException e){
+            System.out.println(e.toString());
+        }
+        return ListaServicios;
+    }
 }

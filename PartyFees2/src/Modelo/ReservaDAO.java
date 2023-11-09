@@ -54,5 +54,31 @@ public class ReservaDAO {
         }
         return id;
     }
+    
+    public List ListarReservas(){
+        List<Reserva> ListaRes = new ArrayList();
+        String sql = "SELECT * FROM reservainfo";
+        try {
+            con = cn.Conectar();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Reserva res = new Reserva();
+                res.setId(rs.getInt("id"));
+                res.setCliente(rs.getString("cliente"));
+                res.setEvento(rs.getString("evento"));
+                res.setDescripcion(rs.getString("descripcion"));
+                res.setFecha_eve(rs.getDate("fecha"));
+                res.setHora_ini(rs.getString("hora_ini"));
+                res.setHora_fin(rs.getString("hora_fin"));
+                res.setFecha(rs.getDate("fecha_res"));
+                res.setEstadotxt(rs.getString("estado"));
+                ListaRes.add(res);       
+            }
+        } catch (SQLException e){
+            System.out.println(e.toString());
+        }
+        return ListaRes;
+    }
 }
 

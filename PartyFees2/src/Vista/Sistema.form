@@ -1358,37 +1358,19 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="tblClientes1">
+                <Component class="javax.swing.JTable" name="tblReservas">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="9" rowCount="1">
-                        <Column editable="true" title="ID" type="java.lang.Object">
-                          <Data value="1"/>
-                        </Column>
-                        <Column editable="true" title="Cliente" type="java.lang.Object">
-                          <Data value="Fernando"/>
-                        </Column>
-                        <Column editable="true" title="Evento" type="java.lang.Object">
-                          <Data value="Fiesta de Cumplea&#xf1;os"/>
-                        </Column>
-                        <Column editable="true" title="Descripcion" type="java.lang.Object">
-                          <Data value="Fiesta de cumplea&#xf1;os para Fernandito"/>
-                        </Column>
-                        <Column editable="true" title="Fecha" type="java.lang.Object">
-                          <Data value="2023-11-08"/>
-                        </Column>
-                        <Column editable="true" title="Precio" type="java.lang.Object">
-                          <Data value="17025"/>
-                        </Column>
-                        <Column editable="true" title="Hora inicio" type="java.lang.Object">
-                          <Data value="17:00"/>
-                        </Column>
-                        <Column editable="true" title="Hora final" type="java.lang.Object">
-                          <Data value="21:00"/>
-                        </Column>
-                        <Column editable="true" title="Estado" type="java.lang.Object">
-                          <Data value="1"/>
-                        </Column>
+                      <Table columnCount="9" rowCount="0">
+                        <Column editable="true" title="ID" type="java.lang.Object"/>
+                        <Column editable="true" title="Cliente" type="java.lang.Object"/>
+                        <Column editable="true" title="Evento" type="java.lang.Object"/>
+                        <Column editable="true" title="Descripcion" type="java.lang.Object"/>
+                        <Column editable="true" title="Fecha" type="java.lang.Object"/>
+                        <Column editable="true" title="Precio" type="java.lang.Object"/>
+                        <Column editable="true" title="Hora inicio" type="java.lang.Object"/>
+                        <Column editable="true" title="Hora final" type="java.lang.Object"/>
+                        <Column editable="true" title="Estado" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="autoResizeMode" type="int" value="0"/>
@@ -1446,7 +1428,7 @@
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblClientes1MouseClicked"/>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblReservasMouseClicked"/>
                   </Events>
                 </Component>
               </SubComponents>
@@ -1458,51 +1440,41 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="tblClientes2">
+                <Component class="javax.swing.JTable" name="tblServicios_Res">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="5" rowCount="1">
-                        <Column editable="true" title="ID" type="java.lang.Object">
-                          <Data value="1"/>
-                        </Column>
-                        <Column editable="true" title="Servicio" type="java.lang.Object">
-                          <Data value="Renta de karaoke"/>
-                        </Column>
-                        <Column editable="true" title="Descripcion" type="java.lang.Object">
-                          <Data value="Renta de karaoke con 100 canciones "/>
-                        </Column>
-                        <Column editable="true" title="Costo" type="java.lang.Object">
-                          <Data value="400"/>
-                        </Column>
-                        <Column editable="true" title="Precio" type="java.lang.Object">
-                          <Data value="2023-11-08"/>
-                        </Column>
+                      <Table columnCount="5" rowCount="0">
+                        <Column editable="true" title="Reserva" type="java.lang.Object"/>
+                        <Column editable="true" title="Servicio" type="java.lang.Object"/>
+                        <Column editable="true" title="Descripcion" type="java.lang.Object"/>
+                        <Column editable="true" title="Costo" type="java.lang.Object"/>
+                        <Column editable="true" title="Precio" type="java.lang.Object"/>
                       </Table>
                     </Property>
-                    <Property name="autoResizeMode" type="int" value="0"/>
+                    <Property name="autoResizeMode" type="int" value="4"/>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="true">
+                        <Column maxWidth="60" minWidth="-1" prefWidth="60" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="160" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="100" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="80" resizable="true">
+                        <Column maxWidth="80" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="80" resizable="true">
+                        <Column maxWidth="80" minWidth="-1" prefWidth="80" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
@@ -1514,7 +1486,7 @@
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblClientes2MouseClicked"/>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblServicios_ResMouseClicked"/>
                   </Events>
                 </Component>
               </SubComponents>
@@ -1526,7 +1498,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="tblClientes3">
+                <Component class="javax.swing.JTable" name="tblConsumoXReserva">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="6" rowCount="2">
@@ -1596,7 +1568,7 @@
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblClientes3MouseClicked"/>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblConsumoXReservaMouseClicked"/>
                   </Events>
                 </Component>
               </SubComponents>

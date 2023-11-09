@@ -10,20 +10,18 @@ package Modelo;
  */
 public class Servicio {
     private int id;
+    private int idreserva;
     private String nombre;
     private String descripcion;
     private double precio;
     private double costo;
 
-    public Servicio(int id, String nombre, String descripcion, double precio, double costo) {
-        this.id = id;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.precio = precio;
-        this.costo = costo;
+    public int getIdreserva() {
+        return idreserva;
     }
 
-    public Servicio() {
+    public void setIdreserva(int idreserva) {
+        this.idreserva = idreserva;
     }
 
     public int getId() {
@@ -65,10 +63,22 @@ public class Servicio {
     public void setCosto(double costo) {
         this.costo = costo;
     }
+
+    public Servicio(int id, String nombre, String descripcion, double precio, double costo) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.costo = costo;
+    }
+
+    public Servicio() {
+    }
     
     @Override
     public String toString() {
         return nombre; // Devuelve el nombre del servicio
     }
+
 
 }

@@ -12,6 +12,7 @@ public class Consumo {
     private int id;
     private int idreserva;
     private int idproducto;
+    private String producto;
     private int cantidad;
     private double subtotal;
 
