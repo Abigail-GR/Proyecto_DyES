@@ -10,7 +10,6 @@ package Modelo;
  */
 public class Cliente {
     private int id;
-    private int idtrabajador;
     private String nombre;
     private String ap_paterno;
     private String ap_materno;
@@ -24,14 +23,6 @@ public class Cliente {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getIdtrabajador() {
-        return idtrabajador;
-    }
-
-    public void setIdtrabajador(int idtrabajador) {
-        this.idtrabajador = idtrabajador;
     }
 
     public String getNombre() {
@@ -82,9 +73,8 @@ public class Cliente {
         this.direccion = direccion;
     }
 
-    public Cliente(int id, int idtrabajador, String nombre, String ap_paterno, String ap_materno, String telefono, String correo, String direccion) {
+    public Cliente(int id, String nombre, String ap_paterno, String ap_materno, String telefono, String correo, String direccion) {
         this.id = id;
-        this.idtrabajador = idtrabajador;
         this.nombre = nombre;
         this.ap_paterno = ap_paterno;
         this.ap_materno = ap_materno;
@@ -95,4 +85,5 @@ public class Cliente {
 
     public Cliente() {
     }
+
 }

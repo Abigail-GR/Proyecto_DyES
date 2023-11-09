@@ -8,23 +8,11 @@ package Modelo;
  *
  * @author dmesc
  */
-public class Servicio {
+public class ComboServicio {
     private int id;
     private String nombre;
-    private String descripcion;
-    private double precio;
     private double costo;
-
-    public Servicio(int id, String nombre, String descripcion, double precio, double costo) {
-        this.id = id;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.precio = precio;
-        this.costo = costo;
-    }
-
-    public Servicio() {
-    }
+    private double precio;
 
     public int getId() {
         return id;
@@ -42,12 +30,12 @@ public class Servicio {
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public double getCosto() {
+        return costo;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setCosto(double costo) {
+        this.costo = costo;
     }
 
     public double getPrecio() {
@@ -58,17 +46,13 @@ public class Servicio {
         this.precio = precio;
     }
 
-    public double getCosto() {
-        return costo;
-    }
-
-    public void setCosto(double costo) {
+    public ComboServicio(int id, String nombre, double costo, double precio) {
+        this.id = id;
+        this.nombre = nombre;
         this.costo = costo;
-    }
-    
-    @Override
-    public String toString() {
-        return nombre; // Devuelve el nombre del servicio
+        this.precio = precio;
     }
 
+    public ComboServicio() {
+    }
 }

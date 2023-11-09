@@ -13,7 +13,7 @@ public class Consumo {
     private int idreserva;
     private int idproducto;
     private int cantidad;
-    private double precio_total;
+    private double subtotal;
 
     public int getId() {
         return id;
@@ -47,20 +47,20 @@ public class Consumo {
         this.cantidad = cantidad;
     }
 
-    public double getPrecio_total() {
-        return precio_total;
+    public double getSubtotal() {
+        return subtotal;
     }
 
-    public void setPrecio_total(double precio_total) {
-        this.precio_total = precio_total;
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
     }
 
-    public Consumo(int id, int idreserva, int idproducto, int cantidad, double precio_total) {
+    public Consumo(int id, int idreserva, int idproducto, int cantidad, double subtotal) {
         this.id = id;
         this.idreserva = idreserva;
         this.idproducto = idproducto;
         this.cantidad = cantidad;
-        this.precio_total = precio_total;
+        this.subtotal = subtotal;
     }
 
     public Consumo() {

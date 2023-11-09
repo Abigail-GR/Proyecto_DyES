@@ -4,32 +4,24 @@
  */
 package Modelo;
 
-import java.util.Date;
-import java.sql.Time;
- 
-
 /**
  *
  * @author dmesc
  */
-public class Evento {
+public class Gasto {
     private int id;
     private String nombre;
     private String descripcion;
-    private Date fecha;
-    private String hora_ini;
-    private String hora_fin;
+    private double costo;
 
-    public Evento() {
+    public Gasto() {
     }
 
-    public Evento(int id, String nombre, String descripcion, Date fecha, String hora_ini, String hora_fin) {
+    public Gasto(int id, String nombre, String descripcion, double costo) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.fecha = fecha;
-        this.hora_ini = hora_ini;
-        this.hora_fin = hora_fin;
+        this.costo = costo;
     }
 
     public int getId() {
@@ -56,29 +48,12 @@ public class Evento {
         this.descripcion = descripcion;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public double getCosto() {
+        return costo;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setCosto(double costo) {
+        this.costo = costo;
     }
-
-    public String getHora_ini() {
-        return hora_ini;
-    }
-
-    public void setHora_ini(String hora_ini) {
-        this.hora_ini = hora_ini;
-    }
-
-    public String getHora_fin() {
-        return hora_fin;
-    }
-
-    public void setHora_fin(String hora_fin) {
-        this.hora_fin = hora_fin;
-    }
-
     
 }

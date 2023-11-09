@@ -44,6 +44,27 @@ public class ServicioDAO {
         }
     }
     
+    public boolean RegistrarServicios(Servicios serv){
+    String sql = "INSERT INTO servicios_res (idreserva, idservicio) VALUES (?,?)";
+    try {
+            con = cn.Conectar();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, serv.getIdreserva());
+            ps.setInt(2, serv.getIdservicio());
+            ps.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+        }
+    }
+    
     public List ListarServicio(){
         List<Servicio> ListaServicio = new ArrayList();
         String sql = "SELECT * FROM servicio";
@@ -66,7 +87,7 @@ public class ServicioDAO {
         return ListaServicio;
     }
      
-    public boolean ModificarServicio(Servicio ser){
+     public boolean ModificarServicio(Servicio ser){
         String sql = "UPDATE servicio SET nombre=?, descripcion=?, costo=?, precio=? WHERE id=?";
         try {
             ps = con.prepareStatement(sql);
@@ -136,5 +157,22 @@ public class ServicioDAO {
             }
         }
         return precio;
+    }
+    
+    public int BuscarIdSer(String nombreServicio){
+        int id = 0;
+        String sql = "SELECT id FROM servicio WHERE nombre = ?";
+        try {
+            con = cn.Conectar();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, nombreServicio);
+            rs = ps.executeQuery();
+            if (rs.next()){
+                id = rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return id;
     }
 }

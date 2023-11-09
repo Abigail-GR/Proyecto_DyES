@@ -171,4 +171,21 @@ public class ProductoDAO {
                 }
                 return suficienteStock;
             }
+    
+    public int BuscarIdPro(String nombreProducto){
+        int id = 0;
+        String sql = "SELECT id FROM producto WHERE nombre = ?";
+        try {
+            con = cn.Conectar();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, nombreProducto);
+            rs = ps.executeQuery();
+            if (rs.next()){
+                id = rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return id;
+    }
 }
