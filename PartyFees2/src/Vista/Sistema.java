@@ -40,6 +40,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerListModel;
@@ -132,6 +133,11 @@ public class Sistema extends javax.swing.JFrame {
         }
     }
     
+    public void LimpiarTablas(JTable tabla) {
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        modelo.setRowCount(0); // Elimina todas las filas
+    }
+    
     private void LimpiarProducto(){
         txtNProducto.setText("");
         txtPDescripcion.setText("");
@@ -167,6 +173,8 @@ public class Sistema extends javax.swing.JFrame {
         fechaEvento.setDate(null);
         txtHInicio.setText("");
         txtHFin.setText("");
+        txtMinInicio.setText("");
+        txtMinFin.setText("");
         txtHorasExtra.setText("");
         lblPrecioHoras.setText("0.00");
     }
@@ -2886,7 +2894,8 @@ public class Sistema extends javax.swing.JFrame {
                 LimpiarEvento();
                 LimpiarConsumo();
                 LimpiarServicios();
-                LimpiarTabla();
+                LimpiarTablas(tblConsumo);
+                LimpiarTablas(tblServicios);
                 cardlayout.show(jPanel2, "c1");
                 tblConsumo.clearSelection();
                 tblServicios.clearSelection();
@@ -3393,6 +3402,7 @@ public class Sistema extends javax.swing.JFrame {
     
     public void RegistrarReserva(){
         String nombreCliente = txtNombreCliente.getText();
+        System.out.println("Nombre Cliente: " + nombreCliente);
         int id_c = cliente.BuscarIdCli(nombreCliente);
         res.setIdcliente(id_c);
         
@@ -3415,8 +3425,6 @@ public class Sistema extends javax.swing.JFrame {
         
         res.setPrecio(precioReservaTotal);
         reserva.RegistrarReserva(res);
-        LimpiarTabla();
-        LimpiarCliente();
     }
     
     public void RegistrarCliente(){
@@ -3435,8 +3443,6 @@ public class Sistema extends javax.swing.JFrame {
         cl.setCorreo(txtCorreoCliente.getText());
         cl.setDireccion(txtDireccionCliente.getText());
         cliente.RegistrarCliente(cl);
-        LimpiarTabla();
-        LimpiarCliente();
     } else {
         JOptionPane.showMessageDialog(null, "Faltan campos de cliente por llenar");
         }
@@ -3458,8 +3464,6 @@ public class Sistema extends javax.swing.JFrame {
             ev.setHora_fin(horaFinBD);
 
             evento.RegistrarEvento(ev);
-            LimpiarTabla();
-            LimpiarCliente();
         }
     }
     
