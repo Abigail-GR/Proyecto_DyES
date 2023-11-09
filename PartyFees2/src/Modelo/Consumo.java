@@ -13,8 +13,34 @@ public class Consumo {
     private int idreserva;
     private int idproducto;
     private String producto;
+    private double costo;
+    private double precio;
     private int cantidad;
     private double subtotal;
+
+    public double getCosto() {
+        return costo;
+    }
+
+    public void setCosto(double costo) {
+        this.costo = costo;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public String getProducto() {
+        return producto;
+    }
+
+    public void setProducto(String producto) {
+        this.producto = producto;
+    }
 
     public int getId() {
         return id;

@@ -46,16 +46,17 @@ public class ConsumoDAO {
     
     public List ListarConsumo(){
         List<Consumo> ListaCon = new ArrayList();
-        String sql = "SELECT * FROM consumo";
+        String sql = "SELECT * FROM consumosinfo";
         try {
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
                 Consumo cons = new Consumo();
-                cons.setId(rs.getInt("id"));
-                cons.setIdreserva(rs.getInt("idreserva"));
-                cons.setIdproducto(rs.getInt("idproducto"));
+                cons.setIdreserva(rs.getInt("id"));
+                cons.setProducto(rs.getString("nombre"));
+                cons.setCosto(rs.getInt("costo"));
+                cons.setPrecio(rs.getInt("precio"));
                 cons.setCantidad(rs.getInt("cantidad"));
                 cons.setSubtotal(rs.getDouble("subtotal"));
                 ListaCon.add(cons);       

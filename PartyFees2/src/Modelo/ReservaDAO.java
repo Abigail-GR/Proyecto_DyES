@@ -71,6 +71,7 @@ public class ReservaDAO {
                 res.setFecha_eve(rs.getDate("fecha"));
                 res.setHora_ini(rs.getString("hora_ini"));
                 res.setHora_fin(rs.getString("hora_fin"));
+                res.setPrecio(rs.getDouble("precio"));
                 res.setFecha(rs.getDate("fecha_res"));
                 res.setEstadotxt(rs.getString("estado"));
                 ListaRes.add(res);       

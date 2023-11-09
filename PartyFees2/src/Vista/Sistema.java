@@ -1230,9 +1230,17 @@ public class Sistema extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Cliente", "Evento", "Descripcion", "Fecha", "Precio", "Hora inicio", "Hora final", "Estado"
+                "ID", "Cliente", "Evento", "Descripcion", "Fecha", "Hora inicio", "Hora final", "Precio", "Fecha Reserva", "Estado"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblReservas.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tblReservas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1246,8 +1254,9 @@ public class Sistema extends javax.swing.JFrame {
             tblReservas.getColumnModel().getColumn(2).setPreferredWidth(200);
             tblReservas.getColumnModel().getColumn(3).setPreferredWidth(250);
             tblReservas.getColumnModel().getColumn(4).setPreferredWidth(80);
-            tblReservas.getColumnModel().getColumn(5).setPreferredWidth(80);
-            tblReservas.getColumnModel().getColumn(8).setPreferredWidth(70);
+            tblReservas.getColumnModel().getColumn(7).setPreferredWidth(80);
+            tblReservas.getColumnModel().getColumn(8).setPreferredWidth(100);
+            tblReservas.getColumnModel().getColumn(9).setPreferredWidth(70);
         }
 
         tblServicios_Res.setModel(new javax.swing.table.DefaultTableModel(
@@ -1257,8 +1266,16 @@ public class Sistema extends javax.swing.JFrame {
             new String [] {
                 "Reserva", "Servicio", "Descripcion", "Costo", "Precio"
             }
-        ));
-        tblServicios_Res.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblServicios_Res.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tblServicios_Res.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblServicios_ResMouseClicked(evt);
@@ -1268,22 +1285,30 @@ public class Sistema extends javax.swing.JFrame {
         if (tblServicios_Res.getColumnModel().getColumnCount() > 0) {
             tblServicios_Res.getColumnModel().getColumn(0).setPreferredWidth(60);
             tblServicios_Res.getColumnModel().getColumn(0).setMaxWidth(60);
-            tblServicios_Res.getColumnModel().getColumn(1).setPreferredWidth(50);
-            tblServicios_Res.getColumnModel().getColumn(2).setPreferredWidth(100);
-            tblServicios_Res.getColumnModel().getColumn(3).setMaxWidth(80);
-            tblServicios_Res.getColumnModel().getColumn(4).setPreferredWidth(80);
-            tblServicios_Res.getColumnModel().getColumn(4).setMaxWidth(80);
+            tblServicios_Res.getColumnModel().getColumn(1).setPreferredWidth(200);
+            tblServicios_Res.getColumnModel().getColumn(2).setPreferredWidth(400);
+            tblServicios_Res.getColumnModel().getColumn(3).setPreferredWidth(60);
+            tblServicios_Res.getColumnModel().getColumn(3).setMaxWidth(60);
+            tblServicios_Res.getColumnModel().getColumn(4).setPreferredWidth(60);
+            tblServicios_Res.getColumnModel().getColumn(4).setMaxWidth(60);
         }
 
         tblConsumoXReserva.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "Bolsa de Papitas", "5", "1", "2", "10"},
-                {"1", "Mini Hot Dogs", "5", "1.5", "3", "15"}
+
             },
             new String [] {
-                "ID", "Producto", "Cantidad", "Costo", "Precio", "Subtotal"
+                "Reserva", "Producto", "Cantidad", "Costo", "Precio", "Subtotal"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblConsumoXReserva.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tblConsumoXReserva.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1292,9 +1317,10 @@ public class Sistema extends javax.swing.JFrame {
         });
         jScrollPane10.setViewportView(tblConsumoXReserva);
         if (tblConsumoXReserva.getColumnModel().getColumnCount() > 0) {
-            tblConsumoXReserva.getColumnModel().getColumn(0).setPreferredWidth(20);
-            tblConsumoXReserva.getColumnModel().getColumn(1).setPreferredWidth(160);
-            tblConsumoXReserva.getColumnModel().getColumn(2).setPreferredWidth(200);
+            tblConsumoXReserva.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tblConsumoXReserva.getColumnModel().getColumn(0).setMaxWidth(60);
+            tblConsumoXReserva.getColumnModel().getColumn(1).setPreferredWidth(230);
+            tblConsumoXReserva.getColumnModel().getColumn(2).setPreferredWidth(80);
             tblConsumoXReserva.getColumnModel().getColumn(3).setPreferredWidth(80);
             tblConsumoXReserva.getColumnModel().getColumn(4).setPreferredWidth(80);
             tblConsumoXReserva.getColumnModel().getColumn(5).setPreferredWidth(80);
@@ -1339,7 +1365,15 @@ public class Sistema extends javax.swing.JFrame {
             new String [] {
                 "ID", "Nombre(s)", "Ap. Paterno", "Ap. Materno", "Teléfono", "Correo", "Dirección"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblClientes.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1350,11 +1384,11 @@ public class Sistema extends javax.swing.JFrame {
         if (tblClientes.getColumnModel().getColumnCount() > 0) {
             tblClientes.getColumnModel().getColumn(0).setPreferredWidth(20);
             tblClientes.getColumnModel().getColumn(1).setPreferredWidth(160);
-            tblClientes.getColumnModel().getColumn(2).setPreferredWidth(200);
+            tblClientes.getColumnModel().getColumn(2).setPreferredWidth(80);
             tblClientes.getColumnModel().getColumn(3).setPreferredWidth(80);
             tblClientes.getColumnModel().getColumn(4).setPreferredWidth(80);
-            tblClientes.getColumnModel().getColumn(5).setPreferredWidth(70);
-            tblClientes.getColumnModel().getColumn(6).setPreferredWidth(150);
+            tblClientes.getColumnModel().getColumn(5).setPreferredWidth(150);
+            tblClientes.getColumnModel().getColumn(6).setPreferredWidth(250);
         }
 
         javax.swing.GroupLayout ClientesLayout = new javax.swing.GroupLayout(Clientes);
@@ -2503,12 +2537,18 @@ public class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDireccionClienteActionPerformed
 
     private void btn_reservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reservasActionPerformed
+        LimpiarTablas(tblReservas);
+        LimpiarTablas(tblServicios_Res);
+        LimpiarTablas(tblConsumoXReserva);
         ListarReservas();
         ListarServicios();
+        ListarConsumo();
         cardlayout.show(jPanel2, "c4");
     }//GEN-LAST:event_btn_reservasActionPerformed
 
     private void btn_clientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clientesActionPerformed
+        LimpiarTablas(tblClientes);
+        ListarCliente();
         cardlayout.show(jPanel2, "c5");
     }//GEN-LAST:event_btn_clientesActionPerformed
 
@@ -3407,13 +3447,14 @@ public class Sistema extends javax.swing.JFrame {
     public void ListarConsumo(){
         List<Consumo> ListaConsumo = consumo.ListarConsumo();
         modelo = (DefaultTableModel) tblConsumoXReserva.getModel();
-        Object[] ob = new Object[5];
+        Object[] ob = new Object[6];
         for (int i = 0; i < ListaConsumo.size(); i++) {
             ob[0] = ListaConsumo.get(i).getIdreserva();
             ob[1] = ListaConsumo.get(i).getProducto();
-            ob[2] = ListaConsumo.get(i).getDescripcion();
+            ob[2] = ListaConsumo.get(i).getCantidad();
             ob[3] = ListaConsumo.get(i).getCosto();
             ob[4] = ListaConsumo.get(i).getPrecio();
+            ob[5] = ListaConsumo.get(i).getSubtotal();
             modelo.addRow(ob);
         }
         tblConsumoXReserva.setModel(modelo);
@@ -3434,10 +3475,27 @@ public class Sistema extends javax.swing.JFrame {
         tblServicios_Res.setModel(modelo);
     }
     
+    public void ListarCliente(){
+        List<Cliente> ListarCl = cliente.ListarCliente();
+        modelo = (DefaultTableModel) tblClientes.getModel();
+        Object[] ob = new Object[7];
+        for (int i = 0; i < ListarCl.size(); i++) {
+            ob[0] = ListarCl.get(i).getId();
+            ob[1] = ListarCl.get(i).getNombre();
+            ob[2] = ListarCl.get(i).getAp_paterno();
+            ob[3] = ListarCl.get(i).getAp_materno();
+            ob[4] = ListarCl.get(i).getTelefono();
+            ob[5] = ListarCl.get(i).getCorreo();
+            ob[6] = ListarCl.get(i).getDireccion();
+            modelo.addRow(ob);
+        }
+        tblClientes.setModel(modelo);
+    }
+    
     public void ListarReservas(){
         List<Reserva> ListarRes = reserva.ListarReservas();
         modelo = (DefaultTableModel) tblReservas.getModel();
-        Object[] ob = new Object[9];
+        Object[] ob = new Object[10];
         for (int i = 0; i < ListarRes.size(); i++) {
             ob[0] = ListarRes.get(i).getId();
             ob[1] = ListarRes.get(i).getCliente();
@@ -3446,8 +3504,9 @@ public class Sistema extends javax.swing.JFrame {
             ob[4] = ListarRes.get(i).getFecha_eve();
             ob[5] = ListarRes.get(i).getHora_ini();
             ob[6] = ListarRes.get(i).getHora_fin();
-            ob[7] = ListarRes.get(i).getFecha();
-            ob[8] = ListarRes.get(i).getEstadotxt();
+            ob[7] = ListarRes.get(i).getPrecio();
+            ob[8] = ListarRes.get(i).getFecha();
+            ob[9] = ListarRes.get(i).getEstadotxt();
             modelo.addRow(ob);
         }
         tblReservas.setModel(modelo);

@@ -1361,16 +1361,17 @@
                 <Component class="javax.swing.JTable" name="tblReservas">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="9" rowCount="0">
-                        <Column editable="true" title="ID" type="java.lang.Object"/>
-                        <Column editable="true" title="Cliente" type="java.lang.Object"/>
-                        <Column editable="true" title="Evento" type="java.lang.Object"/>
-                        <Column editable="true" title="Descripcion" type="java.lang.Object"/>
-                        <Column editable="true" title="Fecha" type="java.lang.Object"/>
-                        <Column editable="true" title="Precio" type="java.lang.Object"/>
-                        <Column editable="true" title="Hora inicio" type="java.lang.Object"/>
-                        <Column editable="true" title="Hora final" type="java.lang.Object"/>
-                        <Column editable="true" title="Estado" type="java.lang.Object"/>
+                      <Table columnCount="10" rowCount="0">
+                        <Column editable="false" title="ID" type="java.lang.Object"/>
+                        <Column editable="false" title="Cliente" type="java.lang.Object"/>
+                        <Column editable="false" title="Evento" type="java.lang.Object"/>
+                        <Column editable="false" title="Descripcion" type="java.lang.Object"/>
+                        <Column editable="false" title="Fecha" type="java.lang.Object"/>
+                        <Column editable="false" title="Hora inicio" type="java.lang.Object"/>
+                        <Column editable="false" title="Hora final" type="java.lang.Object"/>
+                        <Column editable="false" title="Precio" type="java.lang.Object"/>
+                        <Column editable="false" title="Fecha Reserva" type="java.lang.Object"/>
+                        <Column editable="false" title="Estado" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="autoResizeMode" type="int" value="0"/>
@@ -1401,17 +1402,22 @@
                           <Editor/>
                           <Renderer/>
                         </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="80" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                          <Title/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="100" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
@@ -1444,14 +1450,14 @@
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="5" rowCount="0">
-                        <Column editable="true" title="Reserva" type="java.lang.Object"/>
-                        <Column editable="true" title="Servicio" type="java.lang.Object"/>
-                        <Column editable="true" title="Descripcion" type="java.lang.Object"/>
-                        <Column editable="true" title="Costo" type="java.lang.Object"/>
-                        <Column editable="true" title="Precio" type="java.lang.Object"/>
+                        <Column editable="false" title="Reserva" type="java.lang.Object"/>
+                        <Column editable="false" title="Servicio" type="java.lang.Object"/>
+                        <Column editable="false" title="Descripcion" type="java.lang.Object"/>
+                        <Column editable="false" title="Costo" type="java.lang.Object"/>
+                        <Column editable="false" title="Precio" type="java.lang.Object"/>
                       </Table>
                     </Property>
-                    <Property name="autoResizeMode" type="int" value="4"/>
+                    <Property name="autoResizeMode" type="int" value="0"/>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
                         <Column maxWidth="60" minWidth="-1" prefWidth="60" resizable="true">
@@ -1459,22 +1465,22 @@
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="100" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="400" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="80" minWidth="-1" prefWidth="-1" resizable="true">
+                        <Column maxWidth="60" minWidth="-1" prefWidth="60" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="80" minWidth="-1" prefWidth="80" resizable="true">
+                        <Column maxWidth="60" minWidth="-1" prefWidth="60" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
@@ -1501,47 +1507,29 @@
                 <Component class="javax.swing.JTable" name="tblConsumoXReserva">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="6" rowCount="2">
-                        <Column editable="true" title="ID" type="java.lang.Object">
-                          <Data value="1"/>
-                          <Data value="1"/>
-                        </Column>
-                        <Column editable="true" title="Producto" type="java.lang.Object">
-                          <Data value="Bolsa de Papitas"/>
-                          <Data value="Mini Hot Dogs"/>
-                        </Column>
-                        <Column editable="true" title="Cantidad" type="java.lang.Object">
-                          <Data value="5"/>
-                          <Data value="5"/>
-                        </Column>
-                        <Column editable="true" title="Costo" type="java.lang.Object">
-                          <Data value="1"/>
-                          <Data value="1.5"/>
-                        </Column>
-                        <Column editable="true" title="Precio" type="java.lang.Object">
-                          <Data value="2"/>
-                          <Data value="3"/>
-                        </Column>
-                        <Column editable="true" title="Subtotal" type="java.lang.Object">
-                          <Data value="10"/>
-                          <Data value="15"/>
-                        </Column>
+                      <Table columnCount="6" rowCount="0">
+                        <Column editable="true" title="Reserva" type="java.lang.Object"/>
+                        <Column editable="false" title="Producto" type="java.lang.Object"/>
+                        <Column editable="false" title="Cantidad" type="java.lang.Object"/>
+                        <Column editable="false" title="Costo" type="java.lang.Object"/>
+                        <Column editable="false" title="Precio" type="java.lang.Object"/>
+                        <Column editable="false" title="Subtotal" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="autoResizeMode" type="int" value="0"/>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="true">
+                        <Column maxWidth="60" minWidth="-1" prefWidth="60" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="160" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="230" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="80" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
@@ -1627,25 +1615,25 @@
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="7" rowCount="1">
-                        <Column editable="true" title="ID" type="java.lang.Object">
+                        <Column editable="false" title="ID" type="java.lang.Object">
                           <Data value="1"/>
                         </Column>
-                        <Column editable="true" title="Nombre(s)" type="java.lang.Object">
+                        <Column editable="false" title="Nombre(s)" type="java.lang.Object">
                           <Data value="Fernando"/>
                         </Column>
-                        <Column editable="true" title="Ap. Paterno" type="java.lang.Object">
+                        <Column editable="false" title="Ap. Paterno" type="java.lang.Object">
                           <Data value="Gomez"/>
                         </Column>
-                        <Column editable="true" title="Ap. Materno" type="java.lang.Object">
+                        <Column editable="false" title="Ap. Materno" type="java.lang.Object">
                           <Data value="Morin"/>
                         </Column>
-                        <Column editable="true" title="Tel&#xe9;fono" type="java.lang.Object">
+                        <Column editable="false" title="Tel&#xe9;fono" type="java.lang.Object">
                           <Data value="8112345678"/>
                         </Column>
-                        <Column editable="true" title="Correo" type="java.lang.Object">
+                        <Column editable="false" title="Correo" type="java.lang.Object">
                           <Data value="fergom@gmail.com"/>
                         </Column>
-                        <Column editable="true" title="Direcci&#xf3;n" type="java.lang.Object">
+                        <Column editable="false" title="Direcci&#xf3;n" type="java.lang.Object">
                           <Data value="Av Leones 123"/>
                         </Column>
                       </Table>
@@ -1663,11 +1651,6 @@
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="true">
-                          <Title/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="80" resizable="true">
                           <Title/>
                           <Editor/>
@@ -1678,12 +1661,17 @@
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="70" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="80" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="150" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="250" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
