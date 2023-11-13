@@ -24,13 +24,14 @@ public class ReservaDAO {
     int r;
     
     public boolean RegistrarReserva(Reserva res){
-    String sql = "INSERT INTO reserva (idcliente, idevento, precio, estado) VALUES (?,?,?,1)";
+    String sql = "INSERT INTO reserva (idcliente, idevento, precio, precio_actual, estado) VALUES (?,?,?,?,1)";
     try {
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
             ps.setInt(1, res.getIdcliente());
             ps.setInt(2, res.getIdevento());
             ps.setDouble(3, res.getPrecio());
+            ps.setDouble(4, res.getPrecio_actual());
             ps.execute();
             return true;
         } catch (SQLException e) {
@@ -72,6 +73,7 @@ public class ReservaDAO {
                 res.setHora_ini(rs.getString("hora_ini"));
                 res.setHora_fin(rs.getString("hora_fin"));
                 res.setPrecio(rs.getDouble("precio"));
+                res.setPrecio_actual(rs.getDouble("precio_actual"));
                 res.setFecha(rs.getDate("fecha_res"));
                 res.setEstadotxt(rs.getString("estado"));
                 ListaRes.add(res);       

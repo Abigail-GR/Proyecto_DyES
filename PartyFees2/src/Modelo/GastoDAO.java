@@ -23,14 +23,14 @@ public class GastoDAO {
     ResultSet rs;
     int r;
     
-    public boolean RegistrarGasto(Gasto gas){
+    public boolean RegistrarGasto(Gasto ga){
     String sql = "INSERT INTO gastos_fijos (nombre, descripcion, costo) VALUES (?,?,?)";
     try {
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
-            ps.setString(1, gas.getNombre());
-            ps.setString(2, gas.getDescripcion());
-            ps.setDouble(3, gas.getCosto());
+            ps.setString(1, ga.getNombre());
+            ps.setString(2, ga.getDescripcion());
+            ps.setDouble(3, ga.getCosto());
             ps.execute();
             return true;
         } catch (SQLException e) {
@@ -60,14 +60,14 @@ public class GastoDAO {
         return ListaGas;
     }
     
-    public boolean ModificarGasto(Gasto gas){
+    public boolean ModificarGasto(Gasto ga){
         String sql = "UPDATE gastos_fijos SET nombre=?, descripcion=?, costo=? WHERE id=?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, gas.getNombre());
-            ps.setString(2, gas.getDescripcion());
-            ps.setDouble(3, gas.getCosto());
-            ps.setInt(4, gas.getId());
+            ps.setString(1, ga.getNombre());
+            ps.setString(2, ga.getDescripcion());
+            ps.setDouble(3, ga.getCosto());
+            ps.setInt(4, ga.getId());
             ps.execute();
             return true;
         } catch (SQLException e) {

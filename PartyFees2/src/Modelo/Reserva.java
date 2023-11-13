@@ -22,8 +22,29 @@ public class Reserva {
     private String hora_fin;
     private Date fecha;
     private double precio;
+    private double precio_actual;
     private int estado;
     private String estadotxt;
+
+    public Reserva() {
+    }
+
+    public Reserva(int id, int idcliente, String cliente, int idevento, String evento, String descripcion, Date fecha_eve, String hora_ini, String hora_fin, Date fecha, double precio, double precio_actual, int estado, String estadotxt) {
+        this.id = id;
+        this.idcliente = idcliente;
+        this.cliente = cliente;
+        this.idevento = idevento;
+        this.evento = evento;
+        this.descripcion = descripcion;
+        this.fecha_eve = fecha_eve;
+        this.hora_ini = hora_ini;
+        this.hora_fin = hora_fin;
+        this.fecha = fecha;
+        this.precio = precio;
+        this.precio_actual = precio_actual;
+        this.estado = estado;
+        this.estadotxt = estadotxt;
+    }
 
     public int getId() {
         return id;
@@ -113,6 +134,14 @@ public class Reserva {
         this.precio = precio;
     }
 
+    public double getPrecio_actual() {
+        return precio_actual;
+    }
+
+    public void setPrecio_actual(double precio_actual) {
+        this.precio_actual = precio_actual;
+    }
+
     public int getEstado() {
         return estado;
     }
@@ -129,23 +158,6 @@ public class Reserva {
         this.estadotxt = estadotxt;
     }
 
-    public Reserva(int id, int idcliente, String cliente, int idevento, String evento, String descripcion, Date fecha_eve, String hora_ini, String hora_fin, Date fecha, double precio, int estado, String estadotxt) {
-        this.id = id;
-        this.idcliente = idcliente;
-        this.cliente = cliente;
-        this.idevento = idevento;
-        this.evento = evento;
-        this.descripcion = descripcion;
-        this.fecha_eve = fecha_eve;
-        this.hora_ini = hora_ini;
-        this.hora_fin = hora_fin;
-        this.fecha = fecha;
-        this.precio = precio;
-        this.estado = estado;
-        this.estadotxt = estadotxt;
-    }
-
-    public Reserva() {
-    }
+    
 
 }
