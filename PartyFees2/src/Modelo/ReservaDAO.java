@@ -83,5 +83,65 @@ public class ReservaDAO {
         }
         return ListaRes;
     }
+    
+    public void ActualizarEstadoFinalizado() {
+        Connection con = null;
+        PreparedStatement ps = null;
+
+        try {
+            con = cn.Conectar();
+            
+            // Actualizar el estado de la reserva si el precio actual es 0
+            String sql = "UPDATE reserva SET estado = 0 WHERE precio_actual = 0";
+            
+            ps = con.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejo básico de excepciones, puedes personalizarlo según tus necesidades
+        } finally {
+            // Cerrar recursos (PreparedStatement y Connection) en el bloque finally
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace(); // Manejo básico de excepciones, puedes personalizarlo según tus necesidades
+            }
+        }
+    }
+    
+    public void ActualizarEstadoActivo() {
+        Connection con = null;
+        PreparedStatement ps = null;
+
+        try {
+            con = cn.Conectar();
+            
+            // Actualizar el estado de la reserva si el precio actual es 0
+            String sql = "UPDATE reserva SET estado = 1 WHERE precio_actual > 0";
+            
+            ps = con.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejo básico de excepciones, puedes personalizarlo según tus necesidades
+        } finally {
+            // Cerrar recursos (PreparedStatement y Connection) en el bloque finally
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace(); // Manejo básico de excepciones, puedes personalizarlo según tus necesidades
+            }
+        }
+    }
 }
 

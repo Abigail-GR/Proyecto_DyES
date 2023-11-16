@@ -92,7 +92,7 @@ public class PagoDAO {
     }
     
     public boolean EliminarPago(int id){
-        String sql = "DELETE FROM producto WHERE id = ?";
+        String sql = "DELETE FROM pago WHERE id = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);

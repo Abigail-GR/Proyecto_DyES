@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>C:\Users\dmesc\OneDrive - Universidad Autonoma de Nuevo León\Mis cosas\NetBeansProjects2\Proyecto_DyES\PartyFees2\store\PartyFees.jar</jar>
+  <outfile>C:\Users\dmesc\OneDrive - Universidad Autonoma de Nuevo León\Mis cosas\NetBeansProjects2\Proyecto_DyES\PartyFees2\store\PartyFees.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl></downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>C:\Users\dmesc\OneDrive - Universidad Autonoma de Nuevo León\Mis cosas\NetBeansProjects2\Proyecto_DyES\PartyFees2\store\Logo-PartyFees-_2_.ico</icon>
+  <jre>
+    <path>jre-1.8</path>
+    <requiresJdk>false</requiresJdk>
+    <requires64Bit>false</requires64Bit>
+    <minVersion>1.8.0</minVersion>
+    <maxVersion></maxVersion>
+  </jre>
+</launch4jConfig>

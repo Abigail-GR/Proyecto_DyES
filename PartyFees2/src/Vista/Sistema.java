@@ -4,12 +4,14 @@
  */
 package Vista;
 
+import Modelo.AlmacenamientoRenta;
 import Modelo.Cliente;
 import Modelo.ClienteDAO;
 import Modelo.ComboReserva;
 import Modelo.Combo;
 import Modelo.ComboServicio;
 import Modelo.Conexion;
+import Modelo.Configuracion;
 import Modelo.Consumo;
 import Modelo.ConsumoDAO;
 import Modelo.Evento;
@@ -42,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 import javax.swing.AbstractSpinnerModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFormattedTextField;
@@ -53,6 +56,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerModel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -67,8 +71,10 @@ import javax.swing.text.MaskFormatter;
  * @author dmesc
  */
 public class Sistema extends javax.swing.JFrame {
-    
+    private Configuracion configure;
     int item;
+    Configuracion config = new Configuracion();
+    AlmacenamientoRenta almacen = new AlmacenamientoRenta();
     Eventos eventos = new Eventos();
     Gasto ga = new Gasto();
     GastoDAO gasto = new GastoDAO();
@@ -97,6 +103,7 @@ public class Sistema extends javax.swing.JFrame {
     CardLayout cardlayout;
     public Sistema() {
         initComponents();
+        setResizable(false);
         txtGastoID.setVisible(false);
         txtGastoID.setEditable(false);
         txtStaffID.setVisible(false);
@@ -109,7 +116,19 @@ public class Sistema extends javax.swing.JFrame {
         cardlayout=(CardLayout) jPanel2.getLayout();
         ((AbstractDocument) txtHInicio.getDocument()).setDocumentFilter(new NumberDocumentFilter());
         ((AbstractDocument) txtMinInicio.getDocument()).setDocumentFilter(new NumberDocumentFilter());
+        txtRentaReserva.setEditable(false);
+        btnGuardarRenta.setEnabled(false);
+        
+        // Cargar configuración al iniciar el sistema
+        configure = Configuracion.cargarConfiguracion();
+
+        // Configurar el valor de renta en el JTextField
+        txtRentaReserva.setText(String.valueOf(configure.getRenta()));
     }
+    
+    public double obtenerRenta() {
+            return config.getRenta();
+        }
     
     private int horasExtraAnterior = 0; // Variable para rastrear el valor anterior de txtHorasExtra
     
@@ -330,8 +349,13 @@ public class Sistema extends javax.swing.JFrame {
         txtApellidoMCliente = new javax.swing.JTextField();
         txtTelefonoCliente = new javax.swing.JTextField();
         txtCorreoCliente = new javax.swing.JTextField();
-        txtDireccionCliente = new javax.swing.JTextField();
+        jScrollPane18 = new javax.swing.JScrollPane();
+        txtDireccionCliente = new javax.swing.JTextArea();
         btnNReservaSig1 = new javax.swing.JButton();
+        jLabel30 = new javax.swing.JLabel();
+        txtRentaReserva = new javax.swing.JTextField();
+        btnGuardarRenta = new javax.swing.JButton();
+        btnModificarRenta = new javax.swing.JButton();
         Consumo = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
@@ -372,7 +396,6 @@ public class Sistema extends javax.swing.JFrame {
         tblServicios_Res = new javax.swing.JTable();
         jScrollPane10 = new javax.swing.JScrollPane();
         tblConsumoXReserva = new javax.swing.JTable();
-        jMonthChooser1 = new com.toedter.calendar.JMonthChooser();
         Clientes = new javax.swing.JPanel();
         Titulo4 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -472,25 +495,6 @@ public class Sistema extends javax.swing.JFrame {
         tblGastos = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         txtTotalGastos = new javax.swing.JLabel();
-        Serviciosold = new javax.swing.JPanel();
-        jPanel16 = new javax.swing.JPanel();
-        jLabel48 = new javax.swing.JLabel();
-        jLabel49 = new javax.swing.JLabel();
-        jLabel50 = new javax.swing.JLabel();
-        jLabel51 = new javax.swing.JLabel();
-        txtServicio1 = new javax.swing.JTextField();
-        txtDescripcionServicio1 = new javax.swing.JTextField();
-        txtCostoServicio1 = new javax.swing.JTextField();
-        txtPrecioServicio1 = new javax.swing.JTextField();
-        btnAgregarServicio2 = new javax.swing.JButton();
-        btnEliminarServicio2 = new javax.swing.JButton();
-        jButton14 = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblServicio2 = new javax.swing.JTable();
-        Titulo3 = new javax.swing.JLabel();
-        jButton15 = new javax.swing.JButton();
-        jLabel33 = new javax.swing.JLabel();
-        lblTotalServicio2 = new javax.swing.JLabel();
         Logo = new javax.swing.JLabel();
         Fondo = new javax.swing.JLabel();
 
@@ -771,7 +775,7 @@ public class Sistema extends javax.swing.JFrame {
                             .addComponent(jLabel29)
                             .addComponent(lblPrecioHoras)))
                     .addComponent(jScrollPane17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 28, Short.MAX_VALUE))
+                .addGap(0, 27, Short.MAX_VALUE))
         );
 
         PCliente.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Franklin Gothic Book", 0, 18))); // NOI18N
@@ -834,13 +838,11 @@ public class Sistema extends javax.swing.JFrame {
         txtCorreoCliente.setFont(new java.awt.Font("Franklin Gothic Book", 0, 12)); // NOI18N
         txtCorreoCliente.setPreferredSize(new java.awt.Dimension(200, 20));
 
-        txtDireccionCliente.setFont(new java.awt.Font("Franklin Gothic Book", 0, 12)); // NOI18N
-        txtDireccionCliente.setPreferredSize(new java.awt.Dimension(200, 20));
-        txtDireccionCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDireccionClienteActionPerformed(evt);
-            }
-        });
+        txtDireccionCliente.setColumns(20);
+        txtDireccionCliente.setLineWrap(true);
+        txtDireccionCliente.setRows(5);
+        txtDireccionCliente.setWrapStyleWord(true);
+        jScrollPane18.setViewportView(txtDireccionCliente);
 
         javax.swing.GroupLayout PClienteLayout = new javax.swing.GroupLayout(PCliente);
         PCliente.setLayout(PClienteLayout);
@@ -865,8 +867,8 @@ public class Sistema extends javax.swing.JFrame {
                     .addComponent(jLabel17))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtDireccionCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtCorreoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtCorreoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane18, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         PClienteLayout.setVerticalGroup(
@@ -878,7 +880,7 @@ public class Sistema extends javax.swing.JFrame {
                     .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCorreoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(PClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PClienteLayout.createSequentialGroup()
                         .addGroup(PClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel14)
@@ -891,9 +893,11 @@ public class Sistema extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(PClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel16)
-                            .addComponent(txtTelefonoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(txtDireccionCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 8, Short.MAX_VALUE))
+                            .addComponent(txtTelefonoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 8, Short.MAX_VALUE))
+                    .addGroup(PClienteLayout.createSequentialGroup()
+                        .addComponent(jScrollPane18, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         btnNReservaSig1.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
@@ -902,6 +906,38 @@ public class Sistema extends javax.swing.JFrame {
         btnNReservaSig1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNReservaSig1ActionPerformed(evt);
+            }
+        });
+
+        jLabel30.setFont(new java.awt.Font("Franklin Gothic Book", 0, 14)); // NOI18N
+        jLabel30.setText("Renta:");
+
+        txtRentaReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtRentaReservaActionPerformed(evt);
+            }
+        });
+        txtRentaReserva.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtRentaReservaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtRentaReservaKeyTyped(evt);
+            }
+        });
+
+        btnGuardarRenta.setText("Guardar");
+        btnGuardarRenta.setPreferredSize(new java.awt.Dimension(81, 23));
+        btnGuardarRenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarRentaActionPerformed(evt);
+            }
+        });
+
+        btnModificarRenta.setText("Modificar");
+        btnModificarRenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarRentaActionPerformed(evt);
             }
         });
 
@@ -914,7 +950,16 @@ public class Sistema extends javax.swing.JFrame {
                     .addGroup(ClienteEventoLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addGroup(ClienteEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Titulo)
+                            .addGroup(ClienteEventoLayout.createSequentialGroup()
+                                .addComponent(Titulo)
+                                .addGap(136, 136, 136)
+                                .addComponent(jLabel30)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtRentaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnGuardarRenta, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnModificarRenta, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(PCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(PEvento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(ClienteEventoLayout.createSequentialGroup()
@@ -926,7 +971,12 @@ public class Sistema extends javax.swing.JFrame {
             ClienteEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ClienteEventoLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(Titulo)
+                .addGroup(ClienteEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Titulo)
+                    .addComponent(jLabel30)
+                    .addComponent(txtRentaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardarRenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnModificarRenta))
                 .addGap(18, 18, 18)
                 .addComponent(PCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
@@ -1320,6 +1370,7 @@ public class Sistema extends javax.swing.JFrame {
             }
         });
         tblReservas.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tblReservas.setEnabled(false);
         tblReservas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblReservasMouseClicked(evt);
@@ -1354,6 +1405,7 @@ public class Sistema extends javax.swing.JFrame {
             }
         });
         tblServicios_Res.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tblServicios_Res.setEnabled(false);
         tblServicios_Res.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblServicios_ResMouseClicked(evt);
@@ -1388,6 +1440,7 @@ public class Sistema extends javax.swing.JFrame {
             }
         });
         tblConsumoXReserva.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tblConsumoXReserva.setEnabled(false);
         tblConsumoXReserva.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblConsumoXReservaMouseClicked(evt);
@@ -1412,30 +1465,22 @@ public class Sistema extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(ReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(ReservasLayout.createSequentialGroup()
-                        .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jMonthChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Titulo8)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         ReservasLayout.setVerticalGroup(
             ReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ReservasLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(Titulo8)
-                .addGroup(ReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ReservasLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(ReservasLayout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addComponent(jMonthChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(34, Short.MAX_VALUE))
         );
 
@@ -1461,6 +1506,7 @@ public class Sistema extends javax.swing.JFrame {
             }
         });
         tblClientes.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tblClientes.setEnabled(false);
         tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblClientesMouseClicked(evt);
@@ -1542,6 +1588,11 @@ public class Sistema extends javax.swing.JFrame {
         });
 
         comboTipoPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione el tipo de pago...", "VISA", "MasterCard", "PayPal", "Efectivo" }));
+        comboTipoPago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboTipoPagoActionPerformed(evt);
+            }
+        });
 
         comboReservas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2485,199 +2536,6 @@ public class Sistema extends javax.swing.JFrame {
 
         jPanel2.add(Gastos, "c10");
 
-        jPanel16.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Servicios", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Franklin Gothic Book", 0, 18))); // NOI18N
-
-        jLabel48.setFont(new java.awt.Font("Franklin Gothic Book", 0, 14)); // NOI18N
-        jLabel48.setText("Nombre del servicio:");
-
-        jLabel49.setFont(new java.awt.Font("Franklin Gothic Book", 0, 14)); // NOI18N
-        jLabel49.setText("Descripcion:");
-
-        jLabel50.setFont(new java.awt.Font("Franklin Gothic Book", 0, 14)); // NOI18N
-        jLabel50.setText("Costo:");
-
-        jLabel51.setFont(new java.awt.Font("Franklin Gothic Book", 0, 14)); // NOI18N
-        jLabel51.setText("Precio:");
-
-        txtServicio1.setFont(new java.awt.Font("Franklin Gothic Book", 0, 12)); // NOI18N
-        txtServicio1.setPreferredSize(new java.awt.Dimension(200, 20));
-        txtServicio1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtServicio1ActionPerformed(evt);
-            }
-        });
-
-        txtDescripcionServicio1.setFont(new java.awt.Font("Franklin Gothic Book", 0, 12)); // NOI18N
-        txtDescripcionServicio1.setPreferredSize(new java.awt.Dimension(200, 20));
-
-        txtCostoServicio1.setFont(new java.awt.Font("Franklin Gothic Book", 0, 12)); // NOI18N
-        txtCostoServicio1.setPreferredSize(new java.awt.Dimension(200, 20));
-
-        txtPrecioServicio1.setFont(new java.awt.Font("Franklin Gothic Book", 0, 12)); // NOI18N
-        txtPrecioServicio1.setPreferredSize(new java.awt.Dimension(200, 20));
-
-        btnAgregarServicio2.setText("Agregar");
-        btnAgregarServicio2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarServicio2ActionPerformed(evt);
-            }
-        });
-
-        btnEliminarServicio2.setText("Eliminar");
-        btnEliminarServicio2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarServicio2ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
-        jPanel16.setLayout(jPanel16Layout);
-        jPanel16Layout.setHorizontalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel49)
-                    .addComponent(jLabel48))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtDescripcionServicio1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
-                    .addComponent(txtServicio1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel51)
-                    .addComponent(jLabel50))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel16Layout.createSequentialGroup()
-                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtCostoServicio1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-                            .addComponent(txtPrecioServicio1, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
-                        .addGap(31, 31, 31))
-                    .addGroup(jPanel16Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnEliminarServicio2)
-                            .addComponent(btnAgregarServicio2))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-        );
-        jPanel16Layout.setVerticalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel48)
-                    .addComponent(txtServicio1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel49)
-                    .addComponent(txtDescripcionServicio1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(40, 40, 40))
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel50)
-                    .addComponent(txtCostoServicio1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel51)
-                    .addComponent(txtPrecioServicio1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnAgregarServicio2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEliminarServicio2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 10, Short.MAX_VALUE))
-        );
-
-        jButton14.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
-        jButton14.setText("Finalizar");
-        jButton14.setActionCommand("");
-        jButton14.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton14ActionPerformed(evt);
-            }
-        });
-
-        tblServicio2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Servicio", "Descripcion", "Costo", "Precio"
-            }
-        ));
-        jScrollPane3.setViewportView(tblServicio2);
-        if (tblServicio2.getColumnModel().getColumnCount() > 0) {
-            tblServicio2.getColumnModel().getColumn(0).setPreferredWidth(50);
-            tblServicio2.getColumnModel().getColumn(1).setPreferredWidth(30);
-            tblServicio2.getColumnModel().getColumn(2).setPreferredWidth(20);
-            tblServicio2.getColumnModel().getColumn(3).setPreferredWidth(20);
-        }
-
-        Titulo3.setFont(new java.awt.Font("Franklin Gothic Demi", 0, 24)); // NOI18N
-        Titulo3.setText("Nueva Reserva");
-
-        jButton15.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
-        jButton15.setText("Anterior");
-        jButton15.setActionCommand("");
-        jButton15.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton15ActionPerformed(evt);
-            }
-        });
-
-        jLabel33.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel33.setText("Total a pagar:");
-
-        lblTotalServicio2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblTotalServicio2.setText("---");
-
-        javax.swing.GroupLayout ServiciosoldLayout = new javax.swing.GroupLayout(Serviciosold);
-        Serviciosold.setLayout(ServiciosoldLayout);
-        ServiciosoldLayout.setHorizontalGroup(
-            ServiciosoldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ServiciosoldLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(ServiciosoldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, ServiciosoldLayout.createSequentialGroup()
-                        .addComponent(Titulo3)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3)
-                    .addComponent(jPanel16, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(24, 24, 24))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ServiciosoldLayout.createSequentialGroup()
-                .addContainerGap(130, Short.MAX_VALUE)
-                .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(80, 80, 80)
-                .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(130, 130, 130))
-            .addGroup(ServiciosoldLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(jLabel33)
-                .addGap(43, 43, 43)
-                .addComponent(lblTotalServicio2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        ServiciosoldLayout.setVerticalGroup(
-            ServiciosoldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ServiciosoldLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(Titulo3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(ServiciosoldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel33)
-                    .addComponent(lblTotalServicio2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(ServiciosoldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
-
-        jPanel2.add(Serviciosold, "");
-
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, 660, 500));
 
         Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Logo PartyFees (1).png"))); // NOI18N
@@ -2700,14 +2558,12 @@ public class Sistema extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreClienteActionPerformed
 
-    private void txtDireccionClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDireccionClienteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDireccionClienteActionPerformed
-
     private void btn_reservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reservasActionPerformed
         LimpiarTablas(tblReservas);
         LimpiarTablas(tblServicios_Res);
         LimpiarTablas(tblConsumoXReserva);
+        reserva.ActualizarEstadoFinalizado();
+        reserva.ActualizarEstadoActivo();
         ListarReservas();
         ListarServicios();
         ListarConsumo();
@@ -2723,6 +2579,7 @@ public class Sistema extends javax.swing.JFrame {
     private void btn_staffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_staffActionPerformed
         LimpiarTablas(tblStaff);
         ListarStaff();
+        LimpiarStaff();
         SumaStaff();
         cardlayout.show(jPanel2, "c9");
     }//GEN-LAST:event_btn_staffActionPerformed
@@ -2743,6 +2600,8 @@ public class Sistema extends javax.swing.JFrame {
         if (validarCamposCliente() & validarCamposEvento()) {
             cardlayout.show(jPanel2, "c2");
             LlenarProductos();
+            LimpiarTablas(tblConsumo);
+            LimpiarTablas(tblServicios);
         }
     }//GEN-LAST:event_btnNReservaSig1ActionPerformed
 
@@ -2772,7 +2631,7 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btnNReservaSig2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNReservaSig2ActionPerformed
         if (tblConsumo.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null, "Falta seleccionar productos de consumo");
+            JOptionPane.showMessageDialog(null, "Falta(n) seleccionar producto(s) de consumo", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             cardlayout.show(jPanel2, "c3");
             tblConsumo.clearSelection();
@@ -2788,7 +2647,7 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btnModificarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProductoActionPerformed
         if ("".equals(txtPID.getText())){
-            JOptionPane.showMessageDialog(null, "Seleccione una fila");
+            JOptionPane.showMessageDialog(null, "Seleccione una fila", "Error", JOptionPane.INFORMATION_MESSAGE);
         } else{
             pro.setId(Integer.parseInt(txtPID.getText()));
             pro.setNombre(txtNProducto.getText());
@@ -2807,11 +2666,11 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btnEliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProductoActionPerformed
         if ("".equals(txtPID.getText())){
-            JOptionPane.showMessageDialog(null, "Seleccione una fila");
+            JOptionPane.showMessageDialog(null, "Seleccione una fila", "Error", JOptionPane.INFORMATION_MESSAGE);
         } else{
             if (!"".equals(txtPID.getText())){
-                int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar el registro?");
-                if (pregunta == 0){
+                int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar el registro?", "Confirmación", JOptionPane.YES_NO_OPTION);
+                if (pregunta == JOptionPane.YES_OPTION) {
                     int id = Integer.parseInt(txtPID.getText());
                     producto.EliminarProducto(id);
                     LimpiarTabla();
@@ -2833,9 +2692,9 @@ public class Sistema extends javax.swing.JFrame {
             LimpiarTabla();
             LimpiarProducto();
             ListarProducto();
-            JOptionPane.showMessageDialog(null, "Producto registrado");
+            JOptionPane.showMessageDialog(null, "Producto registrado", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         }else{
-            JOptionPane.showMessageDialog(null, "Los campos estan vacios");
+            JOptionPane.showMessageDialog(null, "Los campos están vacíos", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarProductoActionPerformed
 
@@ -2848,25 +2707,6 @@ public class Sistema extends javax.swing.JFrame {
         txtPCosto.setText(tblProductos.getValueAt(fila, 4).toString());
         txtPPrecio.setText(tblProductos.getValueAt(fila, 5).toString());
     }//GEN-LAST:event_tblProductosMouseClicked
-
-    private void txtServicio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtServicio1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtServicio1ActionPerformed
-
-    private void btnEliminarServicio2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarServicio2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnEliminarServicio2ActionPerformed
-
-    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
-       JOptionPane.showMessageDialog(null, "Reserva registrada");
-       LimpiarCliente();
-       LimpiarEvento();
-       cardlayout.show(jPanel2, "c1");
-    }//GEN-LAST:event_jButton14ActionPerformed
-
-    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
-        cardlayout.show(jPanel2, "c2");
-    }//GEN-LAST:event_jButton15ActionPerformed
 
     private void txtHInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHInicioActionPerformed
         // TODO add your handling code here:
@@ -2906,7 +2746,7 @@ public class Sistema extends javax.swing.JFrame {
 
                 for (int i = 0; i < tblConsumo.getRowCount(); i++) {
                     if (tblConsumo.getValueAt(i, 0).equals(nombreProducto)) {
-                        JOptionPane.showMessageDialog(null, "El producto ya está registrado");
+                        JOptionPane.showMessageDialog(null, "El producto ya está registrado", "Error", JOptionPane.ERROR_MESSAGE);
                         LimpiarConsumo();
                         return;
                     }
@@ -2930,10 +2770,10 @@ public class Sistema extends javax.swing.JFrame {
                 TotalPagar();
                 LimpiarConsumo();
             } else {
-                JOptionPane.showMessageDialog(null, "Seleccione un producto válido");
+                JOptionPane.showMessageDialog(null, "Seleccione un producto válido", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Ingrese cantidad");
+            JOptionPane.showMessageDialog(null, "Ingrese cantidad", "Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnAgregarConsumoActionPerformed
 
@@ -2985,31 +2825,36 @@ public class Sistema extends javax.swing.JFrame {
         int idReserva = selectedReserva.getId();
         
         Object selectedItem2 = comboTipoPago.getSelectedItem();
-        String tipoPago = selectedItem2.toString();   
+        int selectedItem22 = comboTipoPago.getSelectedIndex();
+        String tipoPago = selectedItem2.toString();
         
-        if (selectedItem != null || selectedItem2 != null || !"".equals(txtCantidadPagada.getText()) || !"".equals(txtTotalAPagar.getText())){
+        String NTotal_pagotxt = txtTotalAPagar.getText();
+        double Total_pago = Double.parseDouble(NTotal_pagotxt);
+        String Cant_pagadatxt = txtCantidadPagada.getText();
+        double Cant_pagada = Double.parseDouble(Cant_pagadatxt);
+        
+        if (selectedItem != null && selectedItem22 != 0 && !"".equals(txtCantidadPagada.getText()) && !"".equals(txtTotalAPagar.getText()) && Total_pago != 0){
             
             pg.setIdreserva(idReserva);
             pg.setTipo_pago(tipoPago);
             pg.setCant_pagada(Double.parseDouble(txtCantidadPagada.getText()));
             pg.setTotal_pago(Double.parseDouble(txtTotalAPagar.getText()));
             
-            String NTotal_pagotxt = txtTotalAPagar.getText();
-            double Total_pago = Double.parseDouble(NTotal_pagotxt);
-            String Cant_pagadatxt = txtCantidadPagada.getText();
-            double Cant_pagada = Double.parseDouble(Cant_pagadatxt);
-            
             double NuevoTotal_Pago = Total_pago - Cant_pagada;
-                    
             pago.RegistrarPago(pg);
             pago.ActualizarPrecioReserva(idReserva, NuevoTotal_Pago);
             LimpiarPago();
             LimpiarTablas(tblPagos);
             ListarPagos();
-            
-            JOptionPane.showMessageDialog(null, "Pago registrado");
+            JOptionPane.showMessageDialog(null, "Pago registrado", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         }else{
-            JOptionPane.showMessageDialog(null, "Los campos están vacíos");
+            if (Total_pago == 0){
+                JOptionPane.showMessageDialog(null, "La reserva ya está pagada", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                LimpiarPago();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Favor de revisar los campos", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btnGuardarPagoActionPerformed
 
@@ -3021,10 +2866,10 @@ public class Sistema extends javax.swing.JFrame {
         double totalPagar = selectedReserva.getPrecio();
         
         if (idReserva == 0){
-            JOptionPane.showMessageDialog(null, "Seleccione una fila");
+            JOptionPane.showMessageDialog(null, "Favor de seleccionar una reserva activa", "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else{
-            int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar el registro?");
-            if (pregunta == 0){
+            int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar el registro?", "Confirmación", JOptionPane.YES_NO_OPTION);
+            if (pregunta == JOptionPane.YES_OPTION) {
                 pago.EliminarPago(idReserva);
                 
                 String Cant_pagadatxt = txtCantidadPagada.getText();
@@ -3036,6 +2881,8 @@ public class Sistema extends javax.swing.JFrame {
                 LimpiarTabla();
                 LimpiarPago();
                 ListarPagos();
+                comboReservas.removeAllItems();
+                LlenarReservas();
             }
         }
     }//GEN-LAST:event_btnEliminarPagoActionPerformed
@@ -3098,15 +2945,15 @@ public class Sistema extends javax.swing.JFrame {
             LimpiarStaff();
             ListarStaff();
             SumaStaff();
-            JOptionPane.showMessageDialog(null, "Trabajador registrado");
+            JOptionPane.showMessageDialog(null, "Trabajador registrado", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         }else{
-            JOptionPane.showMessageDialog(null, "Los campos están vacíos");
+            JOptionPane.showMessageDialog(null, "Los campos están vacíos", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarStaffActionPerformed
 
     private void btn_ModificarStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ModificarStaffActionPerformed
         if ("".equals(txtStaffID.getText())){
-            JOptionPane.showMessageDialog(null, "Seleccione una fila");
+            JOptionPane.showMessageDialog(null, "Seleccione una fila", "Error", JOptionPane.INFORMATION_MESSAGE);
         } else{
             st.setId(Integer.parseInt(txtStaffID.getText()));
             st.setNombre(txtNombreStaff.getText());
@@ -3120,20 +2967,22 @@ public class Sistema extends javax.swing.JFrame {
             LimpiarTabla();
             LimpiarStaff();
             ListarStaff();
+            SumaStaff();
         }
     }//GEN-LAST:event_btn_ModificarStaffActionPerformed
 
     private void btn_EliminarStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarStaffActionPerformed
         if ("".equals(txtStaffID.getText())){
-            JOptionPane.showMessageDialog(null, "Seleccione una fila");
+            JOptionPane.showMessageDialog(null, "Seleccione una fila", "Error", JOptionPane.INFORMATION_MESSAGE);
         } else{
-            int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar el registro?");
-            if (pregunta == 0){
+            int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar el registro?", "Confirmación", JOptionPane.YES_NO_OPTION);
+            if (pregunta == JOptionPane.YES_OPTION) {
                 int id = Integer.parseInt(txtStaffID.getText());
                 staff.EliminarStaff(id);
                 LimpiarTabla();
                 LimpiarStaff();
                 ListarStaff();
+                SumaStaff();
             }
         }
     }//GEN-LAST:event_btn_EliminarStaffActionPerformed
@@ -3149,15 +2998,15 @@ public class Sistema extends javax.swing.JFrame {
             LimpiarGasto();
             ListarGastos();
             SumaGastos();
-            JOptionPane.showMessageDialog(null, "Gasto registrado");
+            JOptionPane.showMessageDialog(null, "Gasto registrado", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         }else{
-            JOptionPane.showMessageDialog(null, "Los campos están vacíos");
+            JOptionPane.showMessageDialog(null, "Los campos están vacíos", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btn_AgregarGastoActionPerformed
 
     private void btn_ModificarGastoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ModificarGastoActionPerformed
         if ("".equals(txtGastoID.getText())){
-            JOptionPane.showMessageDialog(null, "Seleccione una fila");
+            JOptionPane.showMessageDialog(null, "Seleccione una fila", "Error", JOptionPane.INFORMATION_MESSAGE);
         } else{
             ga.setId(Integer.parseInt(txtGastoID.getText()));
             ga.setNombre(txtGasto.getText());
@@ -3168,22 +3017,24 @@ public class Sistema extends javax.swing.JFrame {
                 LimpiarTabla();
                 LimpiarGasto();
                 ListarGastos();
+                SumaGastos();
             }
         }
     }//GEN-LAST:event_btn_ModificarGastoActionPerformed
 
     private void btn_EliminarGastoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarGastoActionPerformed
        if ("".equals(txtGastoID.getText())){
-            JOptionPane.showMessageDialog(null, "Seleccione una fila");
+            JOptionPane.showMessageDialog(null, "Seleccione una fila", "Error", JOptionPane.INFORMATION_MESSAGE);
         } else{
             if (!"".equals(txtGastoID.getText())){
-                int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar el registro?");
-                if (pregunta == 0){
+                int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar el registro?", "Confirmación", JOptionPane.YES_NO_OPTION);
+            if (pregunta == JOptionPane.YES_OPTION) {
                     int id = Integer.parseInt(txtGastoID.getText());
                     gasto.EliminarGasto(id);
                     LimpiarTabla();
                     LimpiarGasto();
                     ListarGastos();
+                    SumaGastos();
                 }
             }
         }
@@ -3210,8 +3061,8 @@ public class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_tblConsumoXReservaMouseClicked
 
     private void btn_EliminarStaff1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarStaff1ActionPerformed
-        int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de registrar estos salarios?");
-        if (pregunta == 0){
+        int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de registrar estos salarios?", "Confirmación", JOptionPane.YES_NO_OPTION);
+            if (pregunta == JOptionPane.YES_OPTION) {
             ga.setNombre("Salarios");
             ga.setDescripcion("Total de salarios de los trabajadores del negocio");
             String TotalSueldostxt = txtTotalSueldos.getText();
@@ -3223,7 +3074,7 @@ public class Sistema extends javax.swing.JFrame {
 
     private void comboProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboProductosActionPerformed
         Combo selectedProducto = (Combo) comboProductos.getSelectedItem();
-        if (selectedProducto.getId() != -1){
+        if (selectedProducto != null && selectedProducto.getId() != -1){
             txtCantidadConsumo.setEditable(true);
             double precioProducto = producto.ObtenerPrecioDeProducto(selectedProducto.getNombre()); // Obtener el precio
             lblPrecioUConsumo.setText("" + precioProducto); // Actualizar el JLabel con el precio
@@ -3251,10 +3102,6 @@ public class Sistema extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtCantidadConsumoKeyReleased
 
-    private void btnAgregarServicio2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarServicio2ActionPerformed
-        
-    }//GEN-LAST:event_btnAgregarServicio2ActionPerformed
-
     private void btnEliminarServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarServiciosActionPerformed
         int selectedRow = tblServicios.getSelectedRow();
         if (selectedRow != -1) {
@@ -3273,14 +3120,14 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btnNReservaFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNReservaFinalizarActionPerformed
             if (tblServicios.getRowCount() == 0) {
-                JOptionPane.showMessageDialog(null, "Falta seleccionar servicio a reservar");
+                JOptionPane.showMessageDialog(null, "Falta(n) seleccionar servicio(s) a reservar", "Error", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 RegistrarCliente();
                 RegistrarEvento();
                 RegistrarReserva();
                 RegistrarConsumo();
                 RegistrarServicios();
-                JOptionPane.showMessageDialog(null, "Reserva registrada");
+                JOptionPane.showMessageDialog(null, "Reserva registrada", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 LimpiarCliente();
                 LimpiarEvento();
                 LimpiarConsumo();
@@ -3311,7 +3158,7 @@ public class Sistema extends javax.swing.JFrame {
             // Verificar si el servicio ya existe en la tabla
             for (int i = 0; i < tblServicios.getRowCount(); i++) {
                 if (tblServicios.getValueAt(i, 0).equals(nombreServicio)) {
-                    JOptionPane.showMessageDialog(null, "El servicio ya está registrado");
+                    JOptionPane.showMessageDialog(null, "El servicio ya está registrado", "Error", JOptionPane.ERROR_MESSAGE);
                     LimpiarConsumo();
                     return;
                 }
@@ -3352,15 +3199,15 @@ public class Sistema extends javax.swing.JFrame {
             LimpiarTabla();
             LimpiarServicio();
             ListarServicio();
-            JOptionPane.showMessageDialog(null, "Servicio registrado");
+            JOptionPane.showMessageDialog(null, "Servicio registrado", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         }else{
-            JOptionPane.showMessageDialog(null, "Los campos están vacíos");
+            JOptionPane.showMessageDialog(null, "Los campos están vacíos", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarServicioActionPerformed
 
     private void btnModificarServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarServicioActionPerformed
         if ("".equals(txtServicioID.getText())){
-            JOptionPane.showMessageDialog(null, "Seleccione una fila");
+            JOptionPane.showMessageDialog(null, "Seleccione una fila", "Error", JOptionPane.INFORMATION_MESSAGE);
         } else{
             ser.setId(Integer.parseInt(txtServicioID.getText()));
             ser.setNombre(txtServicio.getText());
@@ -3378,11 +3225,11 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btnEliminarServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarServicioActionPerformed
         if ("".equals(txtServicioID.getText())){
-            JOptionPane.showMessageDialog(null, "Seleccione una fila");
+            JOptionPane.showMessageDialog(null, "Seleccione una fila", "Error", JOptionPane.INFORMATION_MESSAGE);
         } else{
             if (!"".equals(txtServicioID.getText())){
-                int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar el registro?");
-                if (pregunta == 0){
+                int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar el registro?", "Confirmación", JOptionPane.YES_NO_OPTION);
+            if (pregunta == JOptionPane.YES_OPTION) {
                     int id = Integer.parseInt(txtServicioID.getText());
                     servicio.EliminarServicio(id);
                     LimpiarTabla();
@@ -3455,7 +3302,7 @@ public class Sistema extends javax.swing.JFrame {
 
                 if (valorHFin > 23) {
                     // El valor excede 23, muestra un mensaje y limpia ambos campos
-                    JOptionPane.showMessageDialog(this, "Número de horas excedido");
+                    JOptionPane.showMessageDialog(null, "Número de horas excedido", "Error", JOptionPane.INFORMATION_MESSAGE);
                     txtHInicio.setText("");
                     txtHFin.setText("");
                 } else {
@@ -3610,6 +3457,44 @@ public class Sistema extends javax.swing.JFrame {
         eventos.numberDecimalKeyPress(evt, txtCostoGasto);
     }//GEN-LAST:event_txtCostoGastoKeyTyped
 
+    private void txtRentaReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRentaReservaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRentaReservaActionPerformed
+
+    private void txtRentaReservaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRentaReservaKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRentaReservaKeyReleased
+
+    private void txtRentaReservaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRentaReservaKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRentaReservaKeyTyped
+
+    private void btnGuardarRentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarRentaActionPerformed
+        // Obtener y almacenar el valor de renta cuando se presiona el botón
+                try {
+                    double nuevaRenta = Double.parseDouble(txtRentaReserva.getText());
+                    configure.setRenta(nuevaRenta);
+                    configure.guardarConfiguracion();
+                    JOptionPane.showMessageDialog(null, "Renta guardada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    txtRentaReserva.setEditable(false);
+                    btnGuardarRenta.setEnabled(false);
+                    btnModificarRenta.setEnabled(true);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Ingrese un valor numérico válido para la renta", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    txtRentaReserva.setText("");
+                }
+    }//GEN-LAST:event_btnGuardarRentaActionPerformed
+
+    private void btnModificarRentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarRentaActionPerformed
+        txtRentaReserva.setEditable(true);
+        btnGuardarRenta.setEnabled(true);
+        btnModificarRenta.setEnabled(false);
+    }//GEN-LAST:event_btnModificarRentaActionPerformed
+
+    private void comboTipoPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboTipoPagoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboTipoPagoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -3659,13 +3544,11 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JPanel Reservas;
     private javax.swing.JPanel Servicio;
     private javax.swing.JPanel Servicios;
-    private javax.swing.JPanel Serviciosold;
     private javax.swing.JPanel Staff;
     private javax.swing.JLabel Titulo;
     private javax.swing.JLabel Titulo1;
     private javax.swing.JLabel Titulo10;
     private javax.swing.JLabel Titulo2;
-    private javax.swing.JLabel Titulo3;
     private javax.swing.JLabel Titulo4;
     private javax.swing.JLabel Titulo5;
     private javax.swing.JLabel Titulo6;
@@ -3673,19 +3556,19 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JLabel Titulo8;
     private javax.swing.JLabel Titulo9;
     private javax.swing.JButton btnAgregarConsumo;
-    private javax.swing.JButton btnAgregarServicio2;
     private javax.swing.JButton btnAgregarServicios;
     private javax.swing.JButton btnEliminarConsumo;
     private javax.swing.JButton btnEliminarPago;
     private javax.swing.JButton btnEliminarProducto;
     private javax.swing.JButton btnEliminarServicio;
-    private javax.swing.JButton btnEliminarServicio2;
     private javax.swing.JButton btnEliminarServicios;
     private javax.swing.JButton btnGuardarPago;
     private javax.swing.JButton btnGuardarProducto;
+    private javax.swing.JButton btnGuardarRenta;
     private javax.swing.JButton btnGuardarServicio;
     private javax.swing.JButton btnGuardarStaff;
     private javax.swing.JButton btnModificarProducto;
+    private javax.swing.JButton btnModificarRenta;
     private javax.swing.JButton btnModificarServicio;
     private javax.swing.JButton btnNReservaAnt1;
     private javax.swing.JButton btnNReservaAnt2;
@@ -3709,10 +3592,8 @@ public class Sistema extends javax.swing.JFrame {
     public javax.swing.JComboBox<Object> comboProductos;
     public javax.swing.JComboBox<Object> comboReservas;
     private javax.swing.JComboBox<Servicio> comboServicios;
-    private javax.swing.JComboBox<String> comboTipoPago;
+    private javax.swing.JComboBox<Object> comboTipoPago;
     private com.toedter.calendar.JDateChooser fechaEvento;
-    private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -3735,8 +3616,8 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
@@ -3750,11 +3631,7 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel47;
-    private javax.swing.JLabel jLabel48;
-    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel50;
-    private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel54;
@@ -3764,12 +3641,10 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
-    private com.toedter.calendar.JMonthChooser jMonthChooser1;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
@@ -3782,8 +3657,8 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane15;
     private javax.swing.JScrollPane jScrollPane16;
     private javax.swing.JScrollPane jScrollPane17;
+    private javax.swing.JScrollPane jScrollPane18;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
@@ -3795,7 +3670,6 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JLabel lblSubtotalConsumo;
     private javax.swing.JLabel lblTotalConsumo;
     private javax.swing.JLabel lblTotalServicio;
-    private javax.swing.JLabel lblTotalServicio2;
     private javax.swing.JTable tblClientes;
     private javax.swing.JTable tblConsumo;
     private javax.swing.JTable tblConsumoXReserva;
@@ -3804,7 +3678,6 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JTable tblProductos;
     private javax.swing.JTable tblReservas;
     private javax.swing.JTable tblServicio;
-    private javax.swing.JTable tblServicio2;
     private javax.swing.JTable tblServicios;
     private javax.swing.JTable tblServicios_Res;
     private javax.swing.JTable tblStaff;
@@ -3817,12 +3690,10 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JTextField txtCorreoCliente;
     private javax.swing.JTextField txtCostoGasto;
     private javax.swing.JTextField txtCostoServicio;
-    private javax.swing.JTextField txtCostoServicio1;
     private javax.swing.JTextArea txtDescripcionEvento;
     private javax.swing.JTextArea txtDescripcionGasto;
     private javax.swing.JTextArea txtDescripcionServicio;
-    private javax.swing.JTextField txtDescripcionServicio1;
-    private javax.swing.JTextField txtDireccionCliente;
+    private javax.swing.JTextArea txtDireccionCliente;
     private javax.swing.JTextField txtGasto;
     private javax.swing.JTextField txtGastoID;
     private javax.swing.JTextField txtHFin;
@@ -3840,9 +3711,8 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JTextField txtPPrecio;
     private javax.swing.JTextField txtPosicionStaff;
     private javax.swing.JTextField txtPrecioServicio;
-    private javax.swing.JTextField txtPrecioServicio1;
+    private javax.swing.JTextField txtRentaReserva;
     private javax.swing.JTextField txtServicio;
-    private javax.swing.JTextField txtServicio1;
     private javax.swing.JTextField txtServicioID;
     private javax.swing.JTextField txtStaffID;
     private javax.swing.JTextField txtSueldoStaff;
@@ -4013,16 +3883,20 @@ public class Sistema extends javax.swing.JFrame {
         String precioHExtrastxt = lblPrecioHoras.getText();
         String totalConsumotxt = lblTotalConsumo.getText();
         String totalServiciostxt = lblTotalServicio.getText();
+        String rentaReservatxt = txtRentaReserva.getText();
         
         double precioHExtrasint = Double.parseDouble(precioHExtrastxt);
         double totalConsumoint = Double.parseDouble(totalConsumotxt);
         double totalServiciosint = Double.parseDouble(totalServiciostxt);
+        double rentaReservaint = Double.parseDouble(rentaReservatxt);
         
-        double precioReservaTotal = precioHExtrasint + totalConsumoint + totalServiciosint;
+        double precioReservaTotal = precioHExtrasint + totalConsumoint + totalServiciosint + rentaReservaint;
         
         res.setPrecio(precioReservaTotal);
         res.setPrecio_actual(precioReservaTotal);
         reserva.RegistrarReserva(res);
+        System.out.println("El valor de renta es:" +rentaReservaint);
+        System.out.println("El valor total de la reserva es:" +precioReservaTotal);
     }
     
     public void RegistrarStaff(){
@@ -4044,7 +3918,7 @@ public class Sistema extends javax.swing.JFrame {
         st.setSueldo(SueldoStaff);
         staff.RegistrarStaff(st);
     } else {
-        JOptionPane.showMessageDialog(null, "Faltan campos de staff por llenar");
+        JOptionPane.showMessageDialog(null, "Los campos están vacíos", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
     
@@ -4060,7 +3934,7 @@ public class Sistema extends javax.swing.JFrame {
         ga.setCosto(CostoGasto);
         gasto.RegistrarGasto(ga);
     } else {
-        JOptionPane.showMessageDialog(null, "Faltan campos de gasto por llenar");
+        JOptionPane.showMessageDialog(null, "Los campos están vacíos", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
     
@@ -4081,7 +3955,7 @@ public class Sistema extends javax.swing.JFrame {
         cl.setDireccion(txtDireccionCliente.getText());
         cliente.RegistrarCliente(cl);
     } else {
-        JOptionPane.showMessageDialog(null, "Faltan campos de cliente por llenar");
+        JOptionPane.showMessageDialog(null, "Faltan campos de cliente por llenar", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
     
@@ -4215,7 +4089,7 @@ public class Sistema extends javax.swing.JFrame {
             !txtDireccionCliente.getText().isEmpty()) {
             return true;
         } else {
-            JOptionPane.showMessageDialog(this, "Faltan campos de cliente por llenar");
+            JOptionPane.showMessageDialog(null, "Faltan campos de cliente por llenar", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return false;
         }
     }
@@ -4229,7 +4103,7 @@ public class Sistema extends javax.swing.JFrame {
             txtMinInicio.getText().isEmpty() ||
             txtHFin.getText().isEmpty() ||
             txtMinFin.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Faltan campos de evento por llenar");
+            JOptionPane.showMessageDialog(null, "Faltan campos de evento por llenar", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return false;
         }
 
@@ -4245,7 +4119,7 @@ public class Sistema extends javax.swing.JFrame {
 
             return true;
         } else {
-            JOptionPane.showMessageDialog(this, "Favor de corregir campos de hora (dos dígitos)");
+            JOptionPane.showMessageDialog(null, "Favor de corregir campos de hora (dos dígitos)", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
